@@ -65,17 +65,31 @@ def place_marker(board, marker, nextPosition):
 
 
 def display_board(board):
-    print(board[0] + "|" + board[1] + "|" + board[2])
-    print("-----")
-    print(board[3] + "|" + board[4] + "|" + board[5])
-    print("-----")
-    print(board[6] + "|" + board[7] + "|" + board[8])
-    print('\n'*20)
+    print(" " + board[0] + " | " + board[1] + " | " + board[2])
+    print("---|---|---")
+    print(" " + board[3] + " | " + board[4] + " | " + board[5])
+    print("---|---|---")
+    print(" " + board[6] + " | " + board[7] + " | " + board[8])
+    print('\n' * 2)
 
 
 def win_check(board, mark):
 
-    if (board[0] == mark and board[1] == mark and board[2] == mark) or (board[3] == mark and board[4] == mark and board[5] == mark) or (board[6] == mark and board[7] == mark and board[8] == mark) or (board[0] == mark and board[3] == mark and board[6] == mark) or (board[1] == mark and board[4] == mark and board[7] == mark) or (board[2] == mark and board[5] == mark and board[8] == mark) or (board[0] == mark and board[4] == mark and board[8] == mark) or (board[2] == mark and board[4] == mark and board[6] == mark):
+    if (board[0] == mark and board[1] == mark and board[2] == mark):
+        return True
+    elif (board[3] == mark and board[4] == mark and board[5] == mark):
+        return True
+    elif (board[6] == mark and board[7] == mark and board[8] == mark):
+        return True
+    elif (board[0] == mark and board[3] == mark and board[6] == mark):
+        return True
+    elif (board[1] == mark and board[4] == mark and board[7] == mark):
+        return True
+    elif (board[2] == mark and board[5] == mark and board[8] == mark):
+        return True
+    elif (board[0] == mark and board[4] == mark and board[8] == mark):
+        return True
+    elif (board[2] == mark and board[4] == mark and board[6] == mark):
         return True
     return False
 
@@ -108,60 +122,56 @@ def replay():
 
 print('Welcome to Tic Tac Toe!')
 
-while True:
-    
-    game_on = True #turning the game on
+game_on = True #turning the game on
 
-    while game_on:
+while game_on:
 
-        board = [' ',' ',' ',' ',' ',' ',' ',' ',' '] # setting the board       
-        p1mark, p2mark = player_input() # player 1 selects mark, and player 2 gets mark (variables are either X or O)
-        first, second = choose_first() # randomizer chooses who goes first, stores it into respective variables (variable have string of Player 1 or 2)
-        activeMarker = None
+    board = [' ',' ',' ',' ',' ',' ',' ',' ',' '] # setting the board       
+    p1mark, p2mark = player_input() # player 1 selects mark, and player 2 gets mark (variables are either X or O)
+    first, second = choose_first() # randomizer chooses who goes first, stores it into respective variables (variable have string of Player 1 or 2)
+    activeMarker = None
 
-        if first == 'Player 1': # setting which player is the active one (i.e. whoever's turn it is)
-            activeMarker = p1mark
-        else:
-            activeMarker = p2mark
+    if first == 'Player 1': # setting which player is the active one (i.e. whoever's turn it is)
+        activeMarker = p1mark
+    else:
+        activeMarker = p2mark
 
-        while True: 
+    while True: 
             
-            spot = player_choice(board) # this asks a player for the next position and returns an integer
-            place_marker(board, activeMarker, spot) # intakes board, marker, position and updates board
-            display_board(board)
-            reset = None
+        spot = player_choice(board) # this asks a player for the next position and returns an integer
+        place_marker(board, activeMarker, spot) # intakes board, marker, position and updates board
+        display_board(board)
             
-            if full_board_check(board) == True: # check if board is full, asks if the games wants to be played again
-                print('The board is full. There are no more moves left')
-                
-                reset = replay()
-                if reset:
-                    print('Let''s go again')
-                    break
-                else:
-                    print('Thank you for playing!')
-                    break
-                
-            elif win_check(board, activeMarker):  # check if active marker has won, asks if game wants to be played again
-                if activeMarker == p1mark:
-                    print('Player 1 has won!')
-                else:
-                    print('Player 2 has won!')
-                
-                reset = replay()
-                if reset:
-                    print('Let''s go again')
-                    break
-                else:
-                    print('Thank you for playing!')
-                    break
-
-            # switch the marker after each turn
+        if win_check(board, activeMarker):  # check if active marker has won, asks if game wants to be played again
             if activeMarker == p1mark:
-                activeMarker = p2mark
+                print('Player 1 has won!')
             else:
-                activeMarker = p1mark
-    
-        game_on = False
-
-    break
+                print('Player 2 has won!')
+                
+            reset = replay()
+            if reset:
+                print('Let''s go again')
+                break
+            else:
+                game_on = False
+                print('Thank you for playing!')
+                break
+        
+        elif full_board_check(board) == True: # check if board is full, asks if the games wants to be played again
+            print('The board is full. There are no more moves left')
+                
+            reset = replay()
+            if reset:
+                print('Let''s go again')
+                break
+            else:
+                game_on = False
+                print('Thank you for playing!')
+                break
+             
+        # switch the marker after each turn
+        if activeMarker == p1mark:
+            activeMarker = p2mark
+        else:
+            activeMarker = p1mark
+            
